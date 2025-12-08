@@ -2327,12 +2327,12 @@ class DSS:
         保存优化结果并生成报告
         
         生成内容:
-            1. SVG格式的电路图像(保存在svg_circuits子目录)
+            1. SVG格式的电路图像(保存在circuits子目录)
             2. Markdown格式的优化报告(包含成本、门配置等信息)
         
         输出目录结构:
             folder_name/
-            ├── svg_circuits/
+            ├── circuits/
             │   ├── circuit_0.svg
             │   ├── circuit_1.svg
             │   └── ...
@@ -2343,7 +2343,7 @@ class DSS:
             report_name: Markdown报告文件名
         """
         # -------------------- 创建输出目录 --------------------
-        img_folder = os.path.join(folder_name, "svg_circuits")
+        img_folder = os.path.join(folder_name, "circuits")
         os.makedirs(img_folder, exist_ok=True)
         
         self._print_header("保存优化结果")
@@ -2376,11 +2376,21 @@ class DSS:
             
             # === 生成SVG图像 ===
             svg_filename = f"circuit_{k}.svg"
-            svg_relative_path = os.path.join("svg_circuits", svg_filename)
+            svg_relative_path = os.path.join("circuits", svg_filename)
             svg_full_path = os.path.join(img_folder, svg_filename)
             
             try:
                 draw_circuit(config, svg_full_path)
+            except Exception as e:
+                print(f"    ⚠️  无法绘制电路 {k}: {e}")
+
+            # === 生成PDF图像 ===
+            pdf_filename = f"circuit_{k}.pdf"
+            pdf_relative_path = os.path.join("pdf_circuits", pdf_filename)
+            pdf_full_path = os.path.join(img_folder, pdf_filename)
+
+            try:
+                draw_circuit(config, pdf_full_path)
             except Exception as e:
                 print(f"    ⚠️  无法绘制电路 {k}: {e}")
             
@@ -2388,6 +2398,7 @@ class DSS:
             md_content.append(f"\n---\n")
             md_content.append(f"## 电路 {k+1}\n")
             md_content.append(f"**电路图:** [🔗 查看SVG](./{svg_relative_path})\n")
+            md_content.append(f"**电路图:** [🔗 查看PDF](./{pdf_relative_path})\n")
             
             # --- 统计门数量 ---
             g1_count = sum(1 for (r, q), gt in config.iter_gate1q() 
