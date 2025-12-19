@@ -2137,12 +2137,16 @@ class DSS:
         # -------------------- 定义门选项 --------------------
         # 双比特门: I2, SWAP, CNOT (排除0=随机) 按照实验难度排序
         gate2q_option_ints = [3, 2, 1]
+        # 双比特门: I2, SWAP, CNOT
+        # gate2q_option_ints = [1, 2, 3]
         gate2q_option_names = {
             i: MatConfigBase.INT_TO_GATE_2[i] for i in gate2q_option_ints
         }
         
-        # 单比特门: I1, H, S, HSH, SH, HS (排除0=随机) 按照实验难度排序
+        # # 单比特门: I1, H, S, HSH, SH, HS (排除0=随机) 按照实验难度排序
         gate1q_option_ints = [4,6,5,3,2,1]
+        # 单比特门: I1, H, S, HSH, SH, HS (排除0=随机) 按照实验难度排序
+        # gate1q_option_ints = [1,2,3,4,5,6]
         gate1q_option_names = {
             i: MatConfigBase.INT_TO_GATE_1[i] for i in gate1q_option_ints
         }
@@ -2196,7 +2200,7 @@ class DSS:
                     # prob_threshold = 1e-10
                     # or prob_diff < prob_threshold
                     
-                    #测试 强制替换随机门
+                    # #测试 强制替换随机门
                     if gate_int == gate2q_option_ints[0]:
                         best_gate=gate_int
                         best_Prob=new_Prob
@@ -2204,6 +2208,7 @@ class DSS:
 
                     # 贪心选择
                     if trial_cost <= best_cost:
+                    # if trial_cost < best_cost:
                         best_cost = trial_cost
                         best_gate = gate_int
                         best_Prob = new_Prob
@@ -2264,13 +2269,14 @@ class DSS:
                     # or prob_diff < prob_threshold
 
                     #测试 强制替换随机门
-                    if gate_int == gate2q_option_ints[0]:
+                    if gate_int == gate1q_option_ints[0]:
                         best_gate=gate_int
                         best_Prob=new_Prob
                         best_cost = trial_cost
                     
                     # 贪心选择
                     if trial_cost <= best_cost:
+                    # if trial_cost < best_cost:
                         best_cost = trial_cost
                         best_gate = gate_int
                         best_Prob = new_Prob

@@ -89,9 +89,9 @@ print(f"优化完成，结果已保存至 {output_folder}")
 
 算法旨在最小化以下形式的成本函数（Shadow Norm 的置信度界）：
 
-$$
+$
 \text{Cost} = \sum_{P} w_P \prod_{k=1}^{N} \exp\left(-\frac{\epsilon^2}{2} p_k(P)\right)
-$$
+$
 其中 $p_k(P)$ 是第 $k$ 个测量电路能够成功“击中”（即在计算基下对角化）Pauli 算符 $P$ 的概率。
 
 ### 2\. 计算模式 (Modes)
